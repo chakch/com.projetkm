@@ -54,6 +54,12 @@ public class GenericResource {
         
         return RepoData.GetType(type);
     }
-    
+    @GET
+    @Path("users")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String GetByType() throws URISyntaxException {
+        
+        return "hello";
+    }
 
 }
