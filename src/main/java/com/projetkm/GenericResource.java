@@ -47,12 +47,19 @@ public class GenericResource {
      * 
      */
    
-   @GET
+    @GET
     @Path("{type}")
     @Produces(MediaType.APPLICATION_JSON)
     public String GetByType(@PathParam("type") String type) throws URISyntaxException {
         
         return RepoData.GetType(type);
+    }
+    @GET
+    @Path("{type}/connections")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String GetByTypeConnection(@PathParam("type") String type) throws URISyntaxException {
+        
+        return RepoData.GetTypeConnection(type);
     }
     @GET
     @Path("users")

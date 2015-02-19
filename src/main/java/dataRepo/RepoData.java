@@ -51,4 +51,27 @@ public class RepoData {
      response.close(); 
          return fileContent;
 }
+
+    public static String GetTypeConnection(String type) throws URISyntaxException {
+       URI fromUri = new URI( "http://23.97.213.185:7474/db/data/cypher" );
+    
+
+    WebResource resource = Client.create()
+                .resource( fromUri );
+    String cypher= "{\n" +
+                    "  \"query\" : \"MATCH (n:"+type+")-[:CoMe]->(Metier) RETURN n.name,Metier.name  \",\n" +
+                    "  \"params\" : {\n" +  
+                    "  }\n" +
+                    "}";
+  
+    // POST JSON to the relationships URI
+    ClientResponse response = resource.accept( MediaType.APPLICATION_JSON )
+                                .type( MediaType.APPLICATION_JSON )
+                                .entity(cypher)
+                                .post( ClientResponse.class );
+       String fileContent=response.getEntity(String.class);                    
+       System.out.println(fileContent);
+     response.close(); 
+         return fileContent;
+    }
 }
