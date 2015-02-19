@@ -28,7 +28,35 @@ import javax.ws.rs.core.MediaType;
  * @author chaaben mohamed
  */
 public class RepoData {
-    
+    public static String CreateNode(String type, String node)throws URISyntaxException{
+     URI fromUri = new URI( "http://23.97.213.185:7474/db/data/transaction/commit" );
+     
+     WebResource resource = Client.create()
+                .resource( fromUri );
+     
+   
+     
+        String cypher = "{\n"
+                + "  \"statements\" : [ {\n"
+                + "    \"statement\" : \"CREATE (n {props}) RETURN n\",\n"
+                + "    \"parameters\" : {\n"
+                + "      \"props\" : {\n"
+                + "        \"name\" : \""+node+"\"\n"
+                + "      }\n"
+                + "    }\n"
+                + "  } ]\n"
+                + "}";
+    // POST JSON to the relationships URI
+    ClientResponse response = resource.accept( MediaType.APPLICATION_JSON )
+                                .type( MediaType.APPLICATION_JSON )
+                                .entity(cypher)
+                                .post( ClientResponse.class );
+       String fileContent=response.getEntity(String.class);                    
+       System.out.println(fileContent);
+     response.close(); 
+         return fileContent;
+     
+    }
      public static String GetType(String type) throws URISyntaxException{
      URI fromUri = new URI( "http://23.97.213.185:7474/db/data/cypher" );
     
