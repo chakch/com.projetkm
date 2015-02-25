@@ -59,47 +59,74 @@ public class RepoData {
     }
      public static String GetType(String type) throws URISyntaxException{
      URI fromUri = new URI( "http://23.97.213.185:7474/db/data/cypher" );
-    
-
-    WebResource resource = Client.create()
-                .resource( fromUri );
-    String cypher= "{\n" +
-                    "  \"query\" : \"MATCH (n:"+type+") RETURN n.name \",\n" +
-                    "  \"params\" : {\n" +  
-                    "  }\n" +
-                    "}";
   
-    // POST JSON to the relationships URI
-    ClientResponse response = resource.accept( MediaType.APPLICATION_JSON )
-                                .type( MediaType.APPLICATION_JSON )
-                                .entity(cypher)
-                                .post( ClientResponse.class );
-       String fileContent=response.getEntity(String.class);                    
-       System.out.println(fileContent);
-     response.close(); 
-         return fileContent;
-}
+        WebResource resource = Client.create()
+                .resource(fromUri);
+        String cypher = "{\n"
+                + "  \"query\" : \"MATCH (n:" + type + ") RETURN n.name \",\n"
+                + "  \"params\" : {\n"
+                + "  }\n"
+                + "}";
 
-    public static String GetTypeConnection(String type) throws URISyntaxException {
-       URI fromUri = new URI( "http://23.97.213.185:7474/db/data/cypher" );
-    
-
-    WebResource resource = Client.create()
-                .resource( fromUri );
-    String cypher= "{\n" +
-                    "  \"query\" : \"MATCH (n:"+type+")-[:CoMe]->(Metier) RETURN n.name,Metier.name  \",\n" +
-                    "  \"params\" : {\n" +  
-                    "  }\n" +
-                    "}";
-  
-    // POST JSON to the relationships URI
-    ClientResponse response = resource.accept( MediaType.APPLICATION_JSON )
-                                .type( MediaType.APPLICATION_JSON )
-                                .entity(cypher)
-                                .post( ClientResponse.class );
-       String fileContent=response.getEntity(String.class);                    
-       System.out.println(fileContent);
-     response.close(); 
-         return fileContent;
+        // POST JSON to the relationships URI
+        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON)
+                .header("Content-Type", "application/json;charset=UTF-8")
+                .type(MediaType.APPLICATION_JSON)
+                .entity(cypher)
+                .post(ClientResponse.class);
+        String fileContent = response.getEntity(String.class);
+        System.out.println(fileContent);
+        response.close();
+        return fileContent;
     }
+
+    public static String GetTypeConnection(String first, String second) throws URISyntaxException {
+        URI fromUri = new URI("http://23.97.213.185:7474/db/data/cypher");
+
+        WebResource resource = Client.create()
+                .resource(fromUri);
+        String cypher = "{\n"
+                + "  \"query\" : \" MATCH ({ name:'" + first + "' })-->(" + second + ") RETURN " + second + ".name  \",\n"
+                + "  \"params\" : {\n"
+                + "  }\n"
+                + "}";
+
+        System.out.println(cypher);
+        // POST JSON to the relationships URI
+        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON)
+                 .header("Content-Type", "application/json;charset=UTF-8")
+                .type(MediaType.APPLICATION_JSON)
+                .entity(cypher)
+                .post(ClientResponse.class);
+        System.out.println(response.toString());
+        String fileContent = response.getEntity(String.class);
+        System.out.println(fileContent);
+
+        response.close();
+        return fileContent;
+    }
+   public static String Getall() throws URISyntaxException
+   {
+       URI fromUri = new URI( "http://23.97.213.185:7474/db/data/cypher" );
+  
+        WebResource resource = Client.create()
+                .resource(fromUri);
+        String cypher = "{\n"
+                + "  \"query\" : \"Match a return a.name \",\n"
+                + "  \"params\" : {\n"
+                + "  }\n"
+                + "}";
+
+        // POST JSON to the relationships URI
+        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON)
+                .header("Content-Type", "application/json;charset=UTF-8")
+                .type(MediaType.APPLICATION_JSON)
+                .entity(cypher)
+                .post(ClientResponse.class);
+        String fileContent = response.getEntity(String.class);
+        System.out.println(fileContent);
+        response.close();
+        return fileContent;
+       
+   }
 }
