@@ -179,4 +179,30 @@ public class RepoData {
         response.close();
         return fileContent;
    }
+
+    public static String GetConnConnIn(String first, String second, String third,String type) throws URISyntaxException {
+       URI fromUri = new URI("http://23.97.213.185:7474/db/data/cypher");
+
+        WebResource resource = Client.create()
+                .resource(fromUri);
+        String cypher = "{\n"
+                + "  \"query\" : \" MATCH (S:"+first+")-->(M:"+second+")-->(C:"+third+") where M.name='"+type+"' return distinct S.name,M.name,C.name \",\n"
+                + "  \"params\" : {\n"
+                + "  }\n"
+                + "}";
+
+        System.out.println(cypher);
+        // POST JSON to the relationships URI
+        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON)
+                 .header("Content-Type", "application/json;charset=UTF-8")
+                .type(MediaType.APPLICATION_JSON)
+                .entity(cypher)
+                .post(ClientResponse.class);
+        System.out.println(response.toString());
+        String fileContent = response.getEntity(String.class);
+        System.out.println(fileContent);
+
+        response.close();
+        return fileContent;
+    }
 }
