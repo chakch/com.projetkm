@@ -152,7 +152,7 @@ public class RepoData {
         response.close();
         return fileContent;  
            }
-   public static String GetConIns(String Ins,String Con) throws URISyntaxException
+   public static String GetConIns(String cla,String ins) throws URISyntaxException
           
    {
         URI fromUri = new URI("http://23.97.213.185:7474/db/data/cypher");
@@ -160,7 +160,7 @@ public class RepoData {
         WebResource resource = Client.create()
                 .resource(fromUri);
         String cypher = "{\n"
-                + "  \"query\" : \" MATCH ({ name:'" + Ins + "' })-->(n:" + Con + ") RETURN n.name  \",\n"
+                + "  \"query\" : \" MATCH (n:"+cla+")-->(m{name:'"+ins+"'}) RETURN n.name  \",\n"
                 + "  \"params\" : {\n"
                 + "  }\n"
                 + "}";
@@ -179,14 +179,67 @@ public class RepoData {
         response.close();
         return fileContent;
    }
-
-    public static String GetConnConnIn(String first, String second, String third,String type) throws URISyntaxException {
+   
+   
+    public static String GetInConnIn(String ins1, String cla,String ins2) throws URISyntaxException {
        URI fromUri = new URI("http://23.97.213.185:7474/db/data/cypher");
 
         WebResource resource = Client.create()
                 .resource(fromUri);
         String cypher = "{\n"
-                + "  \"query\" : \" MATCH (S:"+first+")-->(M:"+second+")-->(C:"+third+") where M.name='"+type+"' return distinct S.name,M.name,C.name \",\n"
+                + "  \"query\" : \" MATCH ({name:'"+ins2+"'})--(n:"+cla+")--({name:'"+ins1+"'}) RETURN distinct n.name  \",\n"
+                + "  \"params\" : {\n"
+                + "  }\n"
+                + "}";
+
+        System.out.println(cypher);
+        // POST JSON to the relationships URI
+        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON)
+                 .header("Content-Type", "application/json;charset=UTF-8")
+                .type(MediaType.APPLICATION_JSON)
+                .entity(cypher)
+                .post(ClientResponse.class);
+        System.out.println(response.toString());
+        String fileContent = response.getEntity(String.class);
+        System.out.println(fileContent);
+
+        response.close();
+        return fileContent;
+    }
+
+    public static String GetInClaInCla(String ins1, String cla, String ins2, String mClass) throws URISyntaxException {
+       URI fromUri = new URI("http://23.97.213.185:7474/db/data/cypher");
+
+        WebResource resource = Client.create()
+                .resource(fromUri);
+        String cypher = "{\n"
+                + "  \"query\" : \" MATCH ({name:'"+ins2+"'})--(n:"+cla+")--({name:'"+ins1+"'}) OPTIONAL Match (n)--(m:"+mClass+") RETURN distinct n.name,m.name  \",\n"
+                + "  \"params\" : {\n"
+                + "  }\n"
+                + "}";
+
+        System.out.println(cypher);
+        // POST JSON to the relationships URI
+        ClientResponse response = resource.accept(MediaType.APPLICATION_JSON)
+                 .header("Content-Type", "application/json;charset=UTF-8")
+                .type(MediaType.APPLICATION_JSON)
+                .entity(cypher)
+                .post(ClientResponse.class);
+        System.out.println(response.toString());
+        String fileContent = response.getEntity(String.class);
+        System.out.println(fileContent);
+
+        response.close();
+        return fileContent;
+    }
+
+    public static String GetInClaInIn(String ins1, String cla, String ins2, String mInstance) throws URISyntaxException {
+         URI fromUri = new URI("http://23.97.213.185:7474/db/data/cypher");
+
+        WebResource resource = Client.create()
+                .resource(fromUri);
+        String cypher = "{\n"
+                + "  \"query\" : \" MATCH ({name:'"+ins2+"'})--(n:"+cla+")--({name:'"+ins1+"'}) OPTIONAL Match (n)--(m{name:'"+mInstance+"'}) RETURN distinct n.name,m.name  \",\n"
                 + "  \"params\" : {\n"
                 + "  }\n"
                 + "}";
