@@ -18,6 +18,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -46,7 +47,22 @@ public class GenericResource {
      * @throws java.net.URISyntaxException
      * 
      */
-   
+    @GET
+    @Path("all")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    
+    public String Getall() throws URISyntaxException {
+        
+        return RepoData.Getall();
+    }
+      @GET
+    @Path("allLables")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    
+    public String GetallLables() throws URISyntaxException {
+        
+        return RepoData.GetallLabels();
+    }
     @GET
     @Path("{type}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -56,18 +72,47 @@ public class GenericResource {
         return RepoData.GetType(type);
     }
     @GET
-    @Path("{type}/connections")
+    @Path("{class}/{instance}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public String GetByTypeConnection(@PathParam("type") String type) throws URISyntaxException {
+    public String GetByTypeConnection(@PathParam("class") String cla,@PathParam("instance") String ins) throws URISyntaxException {
         
-        return RepoData.GetTypeConnection(type);
+        return RepoData.GetConIns(cla,ins);
     }
+    
     @GET
-    @Path("users")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String GetByType() throws URISyntaxException {
-        
-        return "hello";
+    @Path("{instance1}/{class}/{instance2}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public String GetByTypeConnectionTwoInst(@Context UriInfo uriInfo, @PathParam("class") String cla, @PathParam("instance1") String ins1, @PathParam("instance2") String ins2) throws URISyntaxException {
+        String mInstance, mClass = "";
+        mInstance = uriInfo.getQueryParameters().getFirst("I");
+        mClass = uriInfo.getQueryParameters().getFirst("C");
+        System.out.println(mInstance);
+        if (mInstance == null && mClass == null) {
+            return RepoData.GetInConnIn(ins1, cla, ins2);
+        } else if (mInstance == null) {
+            return RepoData.GetInClaInCla(ins1, cla, ins2, mClass);
+        } else if (mClass == null) {
+            return RepoData.GetInClaInIn(ins1, cla, ins2, mInstance);
+        } else {
+           throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
     }
-
+    
 }
+    
+    
+    
+   /* @GET
+    @Path("{first}/{second}/{third}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public String GetElement(@PathParam("first") String first,
+                            @PathParam("second") String second,
+                            @PathParam("third") String third,
+                            @QueryParam("type") String type
+    ) throws URISyntaxException {
+        System.out.println(first);
+        
+        return RepoData.GetConnConnIn(first.replace("+", ""),second,third,type);
+    }*/
+   
+
