@@ -16,16 +16,16 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-  <groupId>org.neo4j</groupId>
-  <artifactId>server-api</artifactId>
-  <version>1.9.M04</version>
-</dependency>
-<dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.3.1</version>
-      <scope>compile</scope>
-    </dependency>
+                <groupId>org.neo4j</groupId>
+                <artifactId>server-api</artifactId>
+                <version>1.9.M04</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.3.1</version>
+                <scope>compile</scope>
+            </dependency>
 
             <dependency>
                 <groupId>org.glassfish.jersey</groupId>
@@ -67,75 +67,80 @@
             <version>4.9</version>
             <scope>test</scope>
         </dependency>
-       <dependency>
-   <groupId>org.neo4j</groupId>
-   <artifactId>neo4j</artifactId>
-   <version>2.1.7</version>
-  </dependency>
-     <dependency>
-	<groupId>com.sun.jersey</groupId>
-	<artifactId>jersey-client</artifactId>
-	<version>1.18.2</version>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j</artifactId>
+            <version>2.1.7</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.18.2</version>
+        </dependency>
+        <dependency>
+	<groupId>com.sun.jersey</groupId>
+	<artifactId>jersey-server</artifactId>
+	<version>1.18.2</version>
+</dependency>
 
         <dependency>
- <groupId>org.neo4j</groupId>
- <artifactId>neo4j-kernel</artifactId>
- <version>1.9.M04</version>
- <type>test-jar</type>
- <scope>test</scope>
- </dependency>
- <dependency>
- <groupId>junit</groupId>
- <artifactId>junit-dep</artifactId>
- <version>4.10</version>
- <scope>test</scope>
- </dependency>
- <dependency>
- <groupId>org.hamcrest</groupId>
- <artifactId>hamcrest-all</artifactId>
- <version>1.1</version>
- <scope>test</scope>
- </dependency>
- <dependency>
-	<groupId>com.googlecode.json-simple</groupId>
-	<artifactId>json-simple</artifactId>
-	<version>1.1</version>
-     <type>jar</type>
- </dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-kernel</artifactId>
+            <version>1.9.M04</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit-dep</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>1.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+            <type>jar</type>
+        </dependency>
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
         </dependency>
     </dependencies>
-<repositories>
-   <repository>
-    <id>neo4j-releases</id>
-    <url>http://m2.neo4j.org/releases/</url>
-  </repository>
+    <repositories>
         <repository>
-          <id>neo4j-snapshot-repository</id>
-          <name>Neo4j Maven 2 snapshot repository</name>
-          <url>http://m2.neo4j.org/snapshots</url>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-          <releases>
-            <enabled>false</enabled>
-          </releases>
+            <id>neo4j-releases</id>
+            <url>http://m2.neo4j.org/releases/</url>
+        </repository>
+        <repository>
+            <id>neo4j-snapshot-repository</id>
+            <name>Neo4j Maven 2 snapshot repository</name>
+            <url>http://m2.neo4j.org/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
         <repository>
             <id>Sun</id>
             <url>http://download.java.net/maven/2</url>
         </repository>
-                    <repository>
-    <id>snapshot-repository.java.net</id>
-    <name>Java.net Snapshot Repository for Maven</name>
-    <url>https://maven.java.net/content/repositories/snapshots/</url>
-    <layout>default</layout>
-</repository>
-</repositories>
+        <repository>
+            <id>snapshot-repository.java.net</id>
+            <name>Java.net Snapshot Repository for Maven</name>
+            <url>https://maven.java.net/content/repositories/snapshots/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
     <build>
         <plugins>
             <plugin>

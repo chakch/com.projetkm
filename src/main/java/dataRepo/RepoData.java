@@ -29,7 +29,7 @@ import javax.ws.rs.core.MediaType;
  */
 public class RepoData {
     public static String CreateNode(String type, String node)throws URISyntaxException{
-     URI fromUri = new URI( "http://23.97.213.185:7474/db/data/transaction/commit" );
+     URI fromUri = new URI( "http://localhost:7474/db/data/transaction/commit" );
      
      WebResource resource = Client.create()
                 .resource( fromUri );
@@ -58,7 +58,7 @@ public class RepoData {
      
     }
      public static String GetType(String type) throws URISyntaxException{
-     URI fromUri = new URI( "http://23.97.213.185:7474/db/data/cypher" );
+     URI fromUri = new URI( "http://localhost:7474/db/data/cypher" );
   
         WebResource resource = Client.create()
                 .resource(fromUri);
@@ -81,7 +81,7 @@ public class RepoData {
     }
 
     public static String GetTypeConnection(String first, String second) throws URISyntaxException {
-        URI fromUri = new URI("http://23.97.213.185:7474/db/data/cypher");
+        URI fromUri = new URI("http://localhost:7474/db/data/cypher");
 
         WebResource resource = Client.create()
                 .resource(fromUri);
@@ -107,12 +107,12 @@ public class RepoData {
     }
    public static String Getall() throws URISyntaxException
    {
-       URI fromUri = new URI( "http://23.97.213.185:7474/db/data/cypher" );
+       URI fromUri = new URI( "http://localhost:7474/db/data/cypher" );
   
         WebResource resource = Client.create()
                 .resource(fromUri);
         String cypher = "{\n"
-                + "  \"query\" : \"Match a return a.name \",\n"
+                + "  \"query\" : \"Match a return labels(a),a.name \",\n"
                 + "  \"params\" : {\n"
                 + "  }\n"
                 + "}";
@@ -131,7 +131,7 @@ public class RepoData {
    }
    public static  String GetallLabels() throws URISyntaxException
            {
-              URI fromUri = new URI( "http://23.97.213.185:7474/db/data/cypher" );
+              URI fromUri = new URI( "http://localhost:7474/db/data/cypher" );
   
         WebResource resource = Client.create()
                 .resource(fromUri);
@@ -155,12 +155,12 @@ public class RepoData {
    public static String GetConIns(String cla,String ins) throws URISyntaxException
           
    {
-        URI fromUri = new URI("http://23.97.213.185:7474/db/data/cypher");
+        URI fromUri = new URI("http://localhost:7474/db/data/cypher");
 
         WebResource resource = Client.create()
                 .resource(fromUri);
         String cypher = "{\n"
-                + "  \"query\" : \" MATCH (n:"+cla+")-->(m{name:'"+ins+"'}) RETURN n.name  \",\n"
+                + "  \"query\" : \" MATCH (n:"+cla+")--(m{name:'"+ins+"'}) RETURN distinct n.name  \",\n"
                 + "  \"params\" : {\n"
                 + "  }\n"
                 + "}";
@@ -182,7 +182,7 @@ public class RepoData {
    
    
     public static String GetInConnIn(String ins1, String cla,String ins2) throws URISyntaxException {
-       URI fromUri = new URI("http://23.97.213.185:7474/db/data/cypher");
+       URI fromUri = new URI("http://localhost:7474/db/data/cypher");
 
         WebResource resource = Client.create()
                 .resource(fromUri);
@@ -208,7 +208,7 @@ public class RepoData {
     }
 
     public static String GetInClaInCla(String ins1, String cla, String ins2, String mClass) throws URISyntaxException {
-       URI fromUri = new URI("http://23.97.213.185:7474/db/data/cypher");
+       URI fromUri = new URI("http://localhost:7474/db/data/cypher");
 
         WebResource resource = Client.create()
                 .resource(fromUri);
@@ -234,7 +234,7 @@ public class RepoData {
     }
 
     public static String GetInClaInIn(String ins1, String cla, String ins2, String mInstance) throws URISyntaxException {
-         URI fromUri = new URI("http://23.97.213.185:7474/db/data/cypher");
+         URI fromUri = new URI("http://localhost:7474/db/data/cypher");
 
         WebResource resource = Client.create()
                 .resource(fromUri);
@@ -257,5 +257,35 @@ public class RepoData {
 
         response.close();
         return fileContent;
+    }
+
+    public static String GetElementConnection(String type) {
+        try {
+            URI fromUri = new URI("http://localhost:7474/db/data/cypher");
+            
+            WebResource resource = Client.create()
+                    .resource(fromUri);
+            String cypher = "{\n"
+                    + "  \"query\" : \" MATCH (n)--(m) WHERE n.name =~ '(?i)"+type+"' RETURN distinct labels(m),m.name  \",\n"
+                    + "  \"params\" : {\n"
+                    + "  }\n"
+                    + "}";
+            
+            System.out.println(cypher);
+            // POST JSON to the relationships URI
+            ClientResponse response = resource.accept(MediaType.APPLICATION_JSON)
+                    .header("Content-Type", "application/json;charset=UTF-8")
+                    .type(MediaType.APPLICATION_JSON)
+                    .entity(cypher)
+                    .post(ClientResponse.class);
+            System.out.println(response.toString());
+            String fileContent = response.getEntity(String.class);
+            System.out.println(fileContent);
+            response.close();
+            return fileContent;
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(RepoData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

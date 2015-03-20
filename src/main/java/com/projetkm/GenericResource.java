@@ -71,6 +71,14 @@ public class GenericResource {
         
         return RepoData.GetType(type);
     }
+     @GET
+    @Path("{type}/connections")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    
+    public String GetElementConnection(@PathParam("type") String type) throws URISyntaxException {
+        
+        return RepoData.GetElementConnection(type);
+    }
     @GET
     @Path("{class}/{instance}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -97,10 +105,18 @@ public class GenericResource {
            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
+     @GET
+    @Path("chef/definition")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    
+    public String chef(@PathParam("type") String type) throws URISyntaxException {
+        
+        return "jfjfjsqfjkjsmfjsdklgjsdlkjglksdgklsjgklsjdm";
+    }
     
 }
     
-    
+   
     
    /* @GET
     @Path("{first}/{second}/{third}")
